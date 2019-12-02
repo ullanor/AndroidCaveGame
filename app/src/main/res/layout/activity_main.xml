@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@layout/gradient"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="-16dp">
+
+        <ImageView
+            android:id="@+id/GameImage"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            app:srcCompat="@drawable/entry" />
+
+        <TextView
+            android:id="@+id/GameDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/GameImage"
+            android:paddingHorizontal="5dp"
+            android:text="level description"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!--<Spinner
+            android:id="@+id/GameSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="100dp"
+            android:layout_marginTop="10dp"
+            android:dropDownWidth="match_parent"
+            android:scrollbarSize="10dp"
+            android:spinnerMode="dropdown"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" />-->
+
+
+        <ImageButton
+            android:id="@+id/GameButtonForward"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/GameDescription"
+            android:layout_centerHorizontal="true"
+            android:background="#00C9BF76"
+            android:scaleType="fitCenter"
+            android:src="@drawable/up" />
+
+
+        <ImageButton
+            android:id="@+id/GameButtonLeft"
+            android:background="#00C9BF76"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/GameButtonForward"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/left" />
+
+        <ImageButton
+            android:id="@+id/GameButtonRight"
+            android:background="#00C9BF76"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/GameButtonForward"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="50dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/right"/>
+
+
+        <Button
+            android:id="@+id/GameButtonGameOver"
+            android:layout_below="@id/GameButtonLeft"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Game Over"
+            android:visibility="invisible"
+            android:background="#C9BF76"
+            android:width="200dp"
+            android:textSize="30sp" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
