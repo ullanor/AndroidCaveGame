@@ -5,6 +5,8 @@ import kotlin.system.exitProcess
 
 class Game {
     lateinit var currentLocation:Location
+
+    lateinit var startScreen:StartRoom
     lateinit var none:RoomImpossible
     lateinit var entryHall:Room
     lateinit var L1:Room
@@ -23,7 +25,11 @@ class Game {
     lateinit var R1R2L3F4L5:TunnelWithEnemy
     lateinit var R1R2L3F4R5:Room
     lateinit var R1R2L3F4R5F6:TunnelWithEnemy
-    lateinit var R1R2L3F4R5Lwin:Room
+    lateinit var R1R2L3F4R5L6:Room
+
+    lateinit var R1R2L3F4R5L6Fwin:Room
+    lateinit var R1R2L3F4R5L6L7:TunnelWithEnemy
+    lateinit var R1R2L3F4R5L6R7:RoomWithEnemy
 
     //win
     lateinit var victoryRoom:Room
@@ -39,6 +45,7 @@ class Game {
         val monsterWall:Int = R.drawable.wallmonster1
         val monsterTunnel:Int = R.drawable.hallmonster1
 
+        startScreen = StartRoom("--start--",R.drawable.startscreen,"Welcome to the Cave! \n\nWell, you gotta get out of here..")
         none = RoomImpossible("",0)
         entryHall = Room("Game Over", R.drawable.entry,"Main entrance to the Cave.")
 
@@ -61,8 +68,13 @@ class Game {
         R1R2L3F4R5 = Room("Move Right",forwLeft,"I am almost there.")
         R1R2L3F4R5F6 = TunnelWithEnemy("Move Forward",monsterTunnel,"Get away!")
 
-        //win room
-        R1R2L3F4R5Lwin = Room("Move Left",R.drawable.victory,"We're home now!")
+        //final crossroads
+        R1R2L3F4R5L6 = Room("Move Left",R.drawable.crossroads,"Damn it! They are everywhere..")
+        R1R2L3F4R5L6Fwin = Room("Move Forward",R.drawable.victory,"We're home now!")
+        R1R2L3F4R5L6L7 = TunnelWithEnemy("Move Left",monsterTunnel,"I can't escape him..")
+        R1R2L3F4R5L6R7 = RoomWithEnemy("Move Right",monsterWall,"It's a dead end.")
+
+
         victoryRoom = Room("Exit",R.drawable.victory,"Congratulations, you have completed the game!")
 
         initLeftSide()
@@ -70,6 +82,7 @@ class Game {
     }
 
     private fun initLeftSide(){
+        startScreen.Exits = arrayOf(entryHall)
         entryHall.Exits = arrayOf(none,L1,R1)
         L1.Exits = arrayOf(none,L1L2,L1R2)
         L1L2.Exits = arrayOf(entryHall)
@@ -87,21 +100,16 @@ class Game {
         R1R2L3F4.Exits = arrayOf(none,R1R2L3F4L5,R1R2L3F4R5)
         R1R2L3R4.Exits = arrayOf(entryHall)
         R1R2L3F4L5.Exits = arrayOf(entryHall)
-        R1R2L3F4R5.Exits = arrayOf(R1R2L3F4R5F6,R1R2L3F4R5Lwin,none)
+        R1R2L3F4R5.Exits = arrayOf(R1R2L3F4R5F6,R1R2L3F4R5L6,none)
         R1R2L3F4R5F6.Exits = arrayOf(entryHall)
 
-        //win room
-        R1R2L3F4R5Lwin.Exits = arrayOf(victoryRoom,none,none)
-        victoryRoom.Exits = arrayOf(entryHall,entryHall,entryHall)
+        //final crossroads
+        R1R2L3F4R5L6Fwin.Exits = arrayOf(victoryRoom,none,none)
+        R1R2L3F4R5L6L7.Exits = arrayOf(entryHall)
+        R1R2L3F4R5L6R7.Exits = arrayOf(entryHall)
+        R1R2L3F4R5L6.Exits = arrayOf(R1R2L3F4R5L6Fwin,R1R2L3F4R5L6L7,R1R2L3F4R5L6R7)
+        victoryRoom.Exits = arrayOf(startScreen,startScreen,startScreen) //check it!
 
-    }
-
-    fun FillAdapter(): Array<String>{
-        var array = arrayOf<String>()
-        for (i in 0 until currentLocation.Exits.size){
-            array += currentLocation.Exits[i].direction
-        }
-        return array
     }
 
     fun MoveToANewLocation(newLocation:Int):Boolean{
@@ -114,6 +122,6 @@ class Game {
     }
 
     fun SetStartLocation(){
-        currentLocation = entryHall
+        currentLocation = startScreen
     }
 }

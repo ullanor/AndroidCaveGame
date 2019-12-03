@@ -29,7 +29,8 @@ import com.example.androidgamepawel.classes.RoomWithEnemy
 
 class MainActivity : AppCompatActivity() {
     val game:Game = Game()
-    //var GameOver:Boolean = false
+    var gameIsStarted:Boolean = false
+
     lateinit var timer:CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         activateButtons()
-        StartGame()
+        InitGame()
     }
 
     private fun activateButtons(){
@@ -52,19 +53,15 @@ class MainActivity : AppCompatActivity() {
             buttonClick(2)
         }
         GameButtonGameOver.setOnClickListener{
-            gameOver()
+            if(!gameIsStarted)
+                startOver(true)
+            else
+                startOver(false)
         }
     }
 
     private fun buttonClick(dir:Int){
         try {
-            //if(GameOver){
-                //val intent= Intent(this,GameActivity::class.java)
-                //intent.putExtra("myMsg","hello game over")
-                //startActivity(intent)
-            //    timer.cancel()
-            //}
-            //MoveToANewLocation(GameSpinner.selectedItemPosition)
             if(game.currentLocation.Exits[dir] is RoomImpossible){
                 Toast.makeText(this@MainActivity, "There's no way!", Toast.LENGTH_SHORT).show() //Room is impossible!
 
@@ -80,23 +77,23 @@ class MainActivity : AppCompatActivity() {
         val isMonsterRoom:Boolean = game.MoveToANewLocation(newLocation)
         ShowData()
         if (isMonsterRoom) {
-            //GameOver = true
-            SetMonsterAnimation()
+            SetImageAnimation()
         }
     }
 
-    private fun StartGame(){
+    private fun InitGame(){
         game.SetStartLocation()
         ShowData()
+        SetImageAnimation()
     }
 
     private fun ShowData(){
-        //val aa = ArrayAdapter(this, R.layout.spinner_item_new, game.FillAdapter())
-        //aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        //GameSpinner.adapter = aa
-
         //gif author: jjjjjohn on GIPHY
         //https://media2.giphy.com/media/MuE7CqaehCJiZfL8wS/giphy.gif?cid=790b76117f47267955f3a3f2721b4ca2ca5cb07a26b757d4&rid=giphy.gif
+
+        //dwarf image:
+        //https://warhammerfantasy.fandom.com/wiki/Dwarf?file=Dwarfhead-0.png
+
         if(game.currentLocation.direction == "Exit")
             Glide.with(this).asGif().load(R.drawable.skeldance).into(GameImage)
 
@@ -104,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         GameImage.setImageResource(game.currentLocation.image)
     }
 
-    private fun SetMonsterAnimation(){
+    private fun SetImageAnimation(){
         var counter:Short= 0
         val animationImages = (game.currentLocation as RoomWithEnemy).getEventImages()
         setButtonsVisibility()
@@ -133,7 +130,11 @@ class MainActivity : AppCompatActivity() {
         GameButtonRight.isVisible = !GameButtonRight.isVisible
     }
 
-    private fun gameOver(){
+    private fun startOver(firstStart:Boolean){
+        if(firstStart){
+            gameIsStarted = true
+            GameButtonGameOver.text = "Game Over"
+        }
         timer.cancel()
         GameButtonGameOver.isVisible = false
         setButtonsVisibility()
